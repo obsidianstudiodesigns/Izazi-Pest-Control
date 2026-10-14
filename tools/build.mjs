@@ -220,7 +220,7 @@ for (const page of pages) {
       alt: "A rat in a dark storeroom",
       lines: ["This page has", "gone to ground."],
       sub: "The link may be old. Our services, branches and phone numbers are one click away.",
-      ctas: (r) => `<a class="btn btn--primary" href="${r}">Go to the home page</a><a class="btn btn--ghost" href="${r}contact-us/">Contact a branch</a>`,
+      ctas: (r) => `<a class="btn btn--primary" href="${r}">Go to the home page</a><a class="btn btn--glass" href="${r}contact-us/">Contact a branch</a>`,
       source: "0.3,0.4",
       density: 0.7,
     },
