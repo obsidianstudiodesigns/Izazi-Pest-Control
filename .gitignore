@@ -1,0 +1,5 @@
+dist/
+node_modules/
+.claude/
+__pycache__/
+WEBSITE-AUDIT.md
