@@ -49,13 +49,15 @@ function nav(page, r) {
       </button>
     </div>
   </div>
-  <div class="menu" id="menu" data-menu hidden>
-    <ul class="wrap">${items}</ul>
-    <div class="menu__foot wrap">
-      ${site.branches.map((b) => `<a href="tel:${b.tel[0].href}">${icon("phone")} ${b.name} ${b.tel[0].label}</a>`).join("")}
-    </div>
+</header>
+<!-- Outside the header on purpose: the header's backdrop-filter would become the containing block
+     for this fixed panel and squash it to the header's height. -->
+<div class="menu" id="menu" data-menu hidden>
+  <ul class="wrap">${items}</ul>
+  <div class="menu__foot wrap">
+    ${site.branches.map((b) => `<a href="tel:${b.tel[0].href}">${icon("phone")} ${b.name} ${b.tel[0].label}</a>`).join("")}
   </div>
-</header>`;
+</div>`;
 }
 
 function footer(r) {

@@ -8,7 +8,12 @@
 
   var VERT = "attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}";
   var FRAG = [
+    // Phones honour mediump (desktops silently use highp); the noise hash needs highp or it collapses to flat.
+    "#ifdef GL_FRAGMENT_PRECISION_HIGH",
+    "precision highp float;",
+    "#else",
     "precision mediump float;",
+    "#endif",
     "uniform vec2 uRes;uniform float uTime;uniform vec2 uMouse;uniform float uMouseAmt;",
     "uniform vec2 uSource;uniform float uDensity;uniform vec3 uTintA;uniform vec3 uTintB;uniform float uBeams;",
     "float hash(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}",
@@ -99,6 +104,8 @@
 
     var src = (canvas.dataset.source || "0.5,0.6").split(",").map(Number);
     var target = parseFloat(canvas.dataset.density || "1");
+    // Portrait screens crop the photo tighter and carry a heavier text scrim, so the fog needs more body.
+    var boost = function () { return window.innerWidth < 760 ? 1.45 : 1; };
     var tint = TINTS[canvas.dataset.tint] || TINTS.cool;
     var beams = hero.querySelector("[data-dust]") ? 0.55 : 0;
     gl.uniform3fv(U.uTintA, tint[0]);
@@ -130,7 +137,7 @@
       gl.uniform2f(U.uMouse, state.mx, state.my);
       gl.uniform1f(U.uMouseAmt, state.amt);
       gl.uniform2f(U.uSource, source[0], source[1]);
-      gl.uniform1f(U.uDensity, state.density * (1 - state.progress * 0.9));
+      gl.uniform1f(U.uDensity, Math.min(1.4, state.density * boost()) * (1 - state.progress * 0.9));
       gl.clearColor(0, 0, 0, 0);
       gl.clear(gl.COLOR_BUFFER_BIT);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
